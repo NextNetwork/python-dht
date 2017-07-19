@@ -1,2 +1,2 @@
 # python-dht
-a new generation DHT network wrote by python version
+a new generation DHT network written by python version
