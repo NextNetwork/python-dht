@@ -11,6 +11,7 @@ DHT_ROUTER_NODES = [
     ('router.bitcomet.com', 6881),
     ('dht.transmissionbt.com', 6881)
 ]
+MAX_PREFIX_LEN = 160
 
 class Krpc():
     def __init__(self):
@@ -65,11 +66,31 @@ class Server():
         return
 
 class RoutingTable():
-    def __init__(self):
+    def __init__(self, nodeId):
+        self.nodeId = nodeId
+        self.nodeIdLong = longInt(nodeId)
         return
+    def insert(self, nodeId):
+        #nodeIdLong = longInt(nodeId)
+        for prefixLen in range(0, MAX_PREFIX_LEN - 1):
+            div = prefixLen / 8 #the index of the node string
+            mod = prefixLen % 8
+            nodeIdDivInt = int(nodeId[div])
+            # the high bit of nodeid & current prefixLen mod
+            # when prifixlen = 0 ,then prifixlen mod = 0, highbit = 1000000 = 128 & nodeid[div]
+            # the result = 1xxxxxx then >> (7-mod) = the high bit of byte(char)
+            result = ((1 << (7 - mod)) & nodeIdDivInt) >> (7-mod)
+            #get the child node of result index(0 or 1)
+
 class Kbucket():
     def __init__(self):
-        return
+        self.childs = []
+        self.nodes = []
+        self.prefix = 0
+
+    def setChild(self, index, kbucket):
+        self.child[index] = kbucket
+
 class Node(object):
     __slots__ = ("nid", "ip", "port")
     def __init__(self, nid, ip, port):
@@ -82,8 +103,8 @@ class Node(object):
 
 if __name__ == '__main__':
     #my node id
-    myNodeId = randomString(20)
-    table = RoutingTable()
+    nodeId = randomString(20)
+    table = RoutingTable(nodeId)
 
     srv = Server(table)
     srv.start()

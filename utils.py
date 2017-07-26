@@ -7,5 +7,8 @@ def randomString(len):
     s = ''.join(strlist)
     return s
 
+def longInt(str):
+    return long(str.encode('hex'), 16)
+
 if __name__ == '__main__':
     s = randomString(20)
