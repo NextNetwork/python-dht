@@ -66,11 +66,14 @@ class Server():
         return
 
 class RoutingTable():
-    def __init__(self, nodeId):
+    def __init__(self, node):
+        self.node = node
         self.nodeId = nodeId
         self.nodeIdLong = longInt(nodeId)
+        self.rootBucket = Kbucket()
         return
-    def insert(self, nodeId):
+    def append(self, node):
+        nodeId = node.id
         #nodeIdLong = longInt(nodeId)
         for prefixLen in range(0, MAX_PREFIX_LEN - 1):
             div = prefixLen / 8 #the index of the node string
@@ -80,7 +83,13 @@ class RoutingTable():
             # when prifixlen = 0 ,then prifixlen mod = 0, highbit = 1000000 = 128 & nodeid[div]
             # the result = 1xxxxxx then >> (7-mod) = the high bit of byte(char)
             result = ((1 << (7 - mod)) & nodeIdDivInt) >> (7-mod)
-            #get the child node of result index(0 or 1)
+            # get the child node of result index(0 or 1)
+            childNode = self.rootBucket.childs[result]
+            if childNode != None:
+                self.rootBucket = childNode
+            elif len(self.rootBucket) < K:
+                # this bucket node isn't full
+                self.rootBucket.append(node)
 
 class Kbucket():
     def __init__(self):
@@ -90,6 +99,12 @@ class Kbucket():
 
     def setChild(self, index, kbucket):
         self.child[index] = kbucket
+
+    def append(self, node):
+        self.nodes.append(node)
+
+    def __len__(self):
+        return len(self.nodes)
 
 class Node(object):
     __slots__ = ("nid", "ip", "port")

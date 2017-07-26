@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/Code/BitTorrent-4.2.0/.idea/BitTorrent-4.2.0.iml" filepath="$USER_HOME$/Documents/Code/BitTorrent-4.2.0/.idea/BitTorrent-4.2.0.iml" />
-      <module fileurl="file://$USER_HOME$/Documents/Code/py-dht/.idea/py-dht.iml" filepath="$USER_HOME$/Documents/Code/py-dht/.idea/py-dht.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../BitTorrent-4.2.0/.idea/BitTorrent-4.2.0.iml" filepath="$PROJECT_DIR$/../../BitTorrent-4.2.0/.idea/BitTorrent-4.2.0.iml" />
+      <module fileurl="file://C:\Users\Beck Xu\Documents\Code\BitTorrent-4.2.0\.idea\BitTorrent-4.2.0.iml" filepath="C:\Users\Beck Xu\Documents\Code\BitTorrent-4.2.0\.idea\BitTorrent-4.2.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../py-dht/.idea/py-dht.iml" filepath="$PROJECT_DIR$/../../py-dht/.idea/py-dht.iml" />
+      <module fileurl="file://C:\Users\Beck Xu\Documents\Code\py-dht\.idea\py-dht.iml" filepath="C:\Users\Beck Xu\Documents\Code\py-dht\.idea\py-dht.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/python-dht.iml" filepath="$PROJECT_DIR$/.idea/python-dht.iml" />
     </modules>
   </component>
