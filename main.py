@@ -86,6 +86,7 @@ class RoutingTable():
             # get the child node of result index(0 or 1)
             childNode = self.rootBucket.childs[result]
             if childNode != None:
+                #if child isn't null, continue find, because the node must be the end child
                 self.rootBucket = childNode
             elif len(self.rootBucket) < K:
                 # this bucket node isn't full
