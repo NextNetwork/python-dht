@@ -91,6 +91,11 @@ class RoutingTable():
             elif len(self.rootBucket) < K:
                 # this bucket node isn't full
                 self.rootBucket.append(node)
+            elif self.rootBucket.contain(node):
+                #split this node
+            else:
+                #drop this node
+                #pings the expired nodes in the bucket
 
 class Kbucket():
     def __init__(self):
@@ -103,6 +108,20 @@ class Kbucket():
 
     def append(self, node):
         self.nodes.append(node)
+
+    def split(self):
+        for i in range(0,2):
+            bucket = Kbucket()
+            self.child[i] = bucket
+
+        for node in self.nodes:
+            if index < K/2:
+                self.child[0].append(node)
+            else:
+                self.child[1].append(node)
+
+
+
 
     def __len__(self):
         return len(self.nodes)
