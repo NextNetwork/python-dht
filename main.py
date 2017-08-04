@@ -1,6 +1,7 @@
 import socket
 from utils import *
 from bencode import bencode,bdecode
+import bitmap
 
 BIND_IP = "0.0.0.0:9127"
 K = 8
@@ -91,7 +92,7 @@ class RoutingTable():
             elif len(self.rootBucket) < K:
                 # this bucket node isn't full
                 self.rootBucket.append(node)
-            elif self.rootBucket.contain(node):
+            elif self.node.bitmap.compare(nodeId, prefixLen):
                 #split this node
             else:
                 #drop this node
@@ -130,6 +131,7 @@ class Node(object):
     __slots__ = ("nid", "ip", "port")
     def __init__(self, nid, ip, port):
         self.nid = nid
+        self.bitmap = bitmap.newBitmapFromString(nid)
         self.ip = ip
         self.port = port
     def __eq__(self, other):
