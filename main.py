@@ -71,7 +71,7 @@ class RoutingTable():
         self.node = node
         self.nodeId = nodeId
         self.nodeIdLong = longInt(nodeId)
-        self.rootBucket = Kbucket()
+        self.rootBucket = Kbucket(bitmap.Bitmap(0))
         return
     def append(self, node):
         nodeId = node.id
@@ -92,43 +92,46 @@ class RoutingTable():
             elif len(self.rootBucket) < K:
                 # this bucket node isn't full
                 self.rootBucket.append(node)
-            elif self.node.bitmap.compare(nodeId, prefixLen):
+            elif self.node.bitmap.compare(node.bitmap, prefixLen):
                 #split this node
+                self.rootBucket.split()
+
+                #add this node
+                self.rootBucket.childs[node.bitmap.bit(prefixLen)].append(node)
             else:
                 #drop this node
                 #pings the expired nodes in the bucket
 
 class Kbucket():
-    def __init__(self):
+    def __init__(self, bitmap):
         self.childs = []
         self.nodes = []
-        self.prefix = 0
+        self.prefix = bitmap
 
     def setChild(self, index, kbucket):
-        self.child[index] = kbucket
+        self.childs[index] = kbucket
 
     def append(self, node):
         self.nodes.append(node)
 
     def split(self):
+        prefixLen = self.prefix.size
         for i in range(0,2):
-            bucket = Kbucket()
-            self.child[i] = bucket
+            bucket = Kbucket(bitmap.newBitmapForm(self, self.prefix, prefixLen+1))
+            self.childs[i] = bucket
+
+        #set the last bit of prefix bitmap
+        self.childs[1].prefix.set(prefixLen)
 
         for node in self.nodes:
-            if index < K/2:
-                self.child[0].append(node)
-            else:
-                self.child[1].append(node)
-
-
-
+            # the last bit 1,child on the right
+            self.childs[node.bitmap.bit(prefixLen)].append(node)
 
     def __len__(self):
         return len(self.nodes)
 
 class Node(object):
-    __slots__ = ("nid", "ip", "port")
+    __slots__ = ("nid", "ip", "port", "bitmap")
     def __init__(self, nid, ip, port):
         self.nid = nid
         self.bitmap = bitmap.newBitmapFromString(nid)
